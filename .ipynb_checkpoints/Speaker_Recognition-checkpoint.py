@@ -19,6 +19,7 @@ with open(os.path.join('en_medical_dialog.json'), 'r') as file:
                 #json_data['data'] = data
                 #print(data)
 
+
 # Sample data
 doctor_sentences_train = []
 patient_sentences_train = []
