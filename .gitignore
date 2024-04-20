@@ -4,3 +4,4 @@ modified_data.json
 /ML Models/data_cleaned.csv
 /.ipynb_checkpoints
 /ML Models/.ipynb_checkpoints/
+/ML Models/models/random_forest_model.pkl
