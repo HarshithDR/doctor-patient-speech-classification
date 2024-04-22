@@ -4,7 +4,7 @@
 - Naive bayes .
 - Random Forest .
 - Logistic .
-- SVM 
+- SVM .
 - vanila rnn .
 - lstm nn .
 - feed forward nn . 
