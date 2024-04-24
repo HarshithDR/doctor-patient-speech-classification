@@ -7,6 +7,15 @@ import pickle
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
+import datetime
+import speech_recognition as sr
+import webbrowser
+import os
+import smtplib
+import requests
+import time as t
+import random
+
 
 # Load the logistic regression model
 with open('logistic_regression_model.pkl', 'rb') as file:
@@ -45,6 +54,25 @@ def transcribe_audio(audio_file):
     return text
 
 
+def takeCommand():
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print('Listening......')
+        r.pause_threshold = 0.5
+        r.energy_threshold = 350
+        r.adjust_for_ambient_noise(source, duration=1)
+        audio = r.listen(source)
+
+    try:
+        print('Recognizing.......')
+        query = r.recognize_google(audio, language='en-in')
+        print("User said: ", query)
+
+    except Exception:
+        print ('say that again please......')
+        return 'None'
+    return query
+
 # Function to separate sentences and predict speakers
 def process_audio(audio_file):
     text = transcribe_audio(audio_file)
@@ -57,11 +85,7 @@ def save_conversation(predictions, filename='conversation.txt'):
     with open(filename, 'w') as file:
         for prediction in predictions:
             speaker, sentence = prediction
-            if speaker == '0':
-                file.write(f"Doctor: {sentence.strip()}\n")
-            else:
-                file.write(f"Patient: {sentence.strip()}\n")
-                
+            file.write(f"{speaker}: {sentence.strip()}\n")
 
 # Streamlit UI
 st.title("Doctor-Patient Conversation Analyzer")
@@ -69,17 +93,18 @@ st.title("Doctor-Patient Conversation Analyzer")
 st.write("Please click 'Start Recording' to begin recording your conversation.")
 
 if st.button("Start Recording"):
-    duration = 10  # Adjust duration as needed
-    fs = 44100
-    recording = sd.rec(int(duration * fs), samplerate=fs, channels=2)
+    # duration = 10  # Adjust duration as needed
+    # fs = 44100
+    # recording = sd.rec(int(duration * fs), samplerate=fs, channels=2)
+    query = takeCommand().lower()
     st.write("Recording...")
 
-    sd.wait()
-    audio_filename = "recorded_audio.wav"
-    sf.write(audio_filename, recording, fs)
-    st.write("Recording stopped.")
+    # sd.wait()
+    # audio_filename = "recorded_audio.wav"
+    # sf.write(audio_filename, recording, fs)
+    # st.write("Recording stopped.")
 
     st.write("Processing audio...")
-    predictions = process_audio(audio_filename)
-    save_conversation(predictions)
+    # predictions = process_audio(audio_filename)
+    save_conversation(query)
     st.write("Conversation saved successfully.")
