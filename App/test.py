@@ -17,7 +17,12 @@ def predict_speaker(sentence):
 
     predicted_speaker = model.predict(sentence_vec)[0]
 
-    return predicted_speaker
+    return predicted_speaker, sentence
 
-
-print(predict_speaker("hi doctor, i am feeling dizziness since 10 days"))
+speaker, sentence = predict_speaker("hello i feel pain in my head since 10 days, help me doctor")
+# speaker, sentence = predict_speaker("what is your problem?")
+# print(p)
+if speaker:
+    print(f'patient: {sentence}')
+else:
+    print(f'Doctor: {sentence}')
